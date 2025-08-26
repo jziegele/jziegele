@@ -97,8 +97,3 @@ SVDProjection/
 |-- README.md                   # This file
 ```
 
-## Contributing
-
-Contributions to this project are welcome. If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
-
-For questions or collaborations, please contact the project owner.
