@@ -12,23 +12,19 @@ The core of the analysis involves:
 
 ## Features
 
--   **Automated Simulation Runner:** The `main.m` script automates the process of running simulations for all combinations of specified parameter multipliers.
+-   **Automated Simulation Runner:** The `run_full_analysis.m` script automates the entire analysis pipeline.
 -   **Robust Simulation Core:** Uses the `ode15s` solver for stiff ODEs to simulate the myocardial perfusion model.
 -   **Comprehensive Output Calculation:** The `compute_outputs.m` script calculates a wide range of physiological metrics from the raw simulation data.
--   **Advanced Feature Extraction:** The `calculate_svd_features.m` script uses SVD to reduce the dimensionality of the simulation results and extract key features.
+-   **Advanced Feature Extraction:** The `analyze_simulation_features.m` and `calculate_svd_features.m` scripts use SVD to reduce the dimensionality of the simulation results and extract key features.
 -   **Systematic Plotting:** The `main_plotting.m` script provides a framework for systematically generating a large number of plots to explore the data.
--   **Variety of Plotting Functions:** Includes functions to generate various types of plots, such as:
-    -   Time-series plots of pressures, flows, and volumes.
-    -   Summary metric plots.
-    -   Sensitivity plots.
-    -   Violin plots for visualizing distributions.
+-   **Variety of Plotting Functions:** Includes functions to generate various types of plots, such as time-series, summary metrics, sensitivity plots, and violin plots.
 
 ## Getting Started
 
 ### Prerequisites
 
 -   MATLAB (version R2018a or newer recommended).
--   No special toolboxes are required for the core functionality, but some plotting functions might have specific dependencies (e.g., `violinplot`). Please ensure you have the necessary files for all plotting functions.
+-   No special toolboxes are required for the core functionality, but some plotting functions might have specific dependencies (e.g., `violinplot`).
 
 ### Installation
 
@@ -42,19 +38,31 @@ addpath(genpath(pwd));
 
 ## Usage
 
-The analysis is typically performed in three steps:
+### Automated Workflow (Recommended)
 
-### 1. Running the Simulations (`main.m`)
+A driver script is provided to run the entire analysis pipeline from start to finish. This is the easiest way to get started. This script calls the three main manual execution scripts in the correct order.
 
-This script is the primary driver for the sensitivity analysis. It runs the simulations for all parameter combinations and saves the results. It also contains commented-out examples for plotting the direct results of the simulations (e.g., pressure and flow waveforms).
-
-To run the simulations, execute the `main.m` script in the MATLAB command window:
+To run the full workflow, execute the `run_full_analysis.m` script in the MATLAB command window:
 
 ```matlab
-main
+run_full_analysis
 ```
 
-### 2. Performing the SVD Projection (`analyze_simulation_features.m`)
+### Manual Execution
+
+The analysis can also be performed by running the three core scripts manually in sequence.
+
+#### 1. Running the Simulations (`main_sensitivty_analysis.m`)
+
+This script is the primary driver for the sensitivity analysis. It runs simulations for all defined parameter combinations and saves the results.
+
+To run the simulations, execute the `main_sensitivty_analysis.m` script in the MATLAB command window:
+
+```matlab
+main_sensitivty_analysis
+```
+
+#### 2. Performing the SVD Projection (`analyze_simulation_features.m`)
 
 After running the simulations, this script should be run to perform the SVD projection on the simulation results. It calculates the SVD features for all simulations and saves them to `Sim_SVD_Features.mat`.
 
@@ -64,9 +72,9 @@ To run the SVD projection analysis, execute the `analyze_simulation_features.m` 
 analyze_simulation_features
 ```
 
-### 3. Plotting the SVD Projection Analysis (`main_plotting.m`)
+#### 3. Plotting the SVD Projection Analysis (`main_plotting.m`)
 
-This script is used to generate plots specifically for the SVD projection analysis. It loads the SVD features and creates a variety of plots to visualize the results of the sensitivity analysis on the SVD components.
+This script is used to generate plots specifically for the SVD projection analysis. It loads the SVD features and creates a variety of plots to visualize the results.
 
 To generate the SVD analysis plots, execute the `main_plotting.m` script:
 
@@ -80,7 +88,9 @@ Here is a brief overview of the project's file structure:
 
 ```
 SVDProjection/
-|-- main.m                      # Main script to run the sensitivity analysis
+|-- run_full_analysis.m         # Main driver script to run the entire workflow
+|-- main_sensitivty_analysis.m  # Main script to run the sensitivity analysis simulations
+|-- analyze_simulation_features.m # Script to perform SVD projection on simulation results
 |-- main_plotting.m             # Main script to generate plots
 |-- compute_outputs.m           # Function to calculate physiological outputs
 |-- run_myocardial_ODE.m        # Function to run the ODE simulation
@@ -97,3 +107,8 @@ SVDProjection/
 |-- README.md                   # This file
 ```
 
+## Contributing
+
+Contributions to this project are welcome. If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
+
+For questions or collaborations, please contact the project owner.
