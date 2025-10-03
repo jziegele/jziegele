@@ -1,10 +1,11 @@
 function [Fn,Fn2,fshift]= CalcFourierModes(f,t)
-% CalcFourierModes - Calculates the Fourier series components of a signal.
+% CalcFourierModes - Calculates the Fourier series components of a uniformly sampled signal.
 % This function was extracted from FourierAnalysisSVD2.m to be used globally.
+% IMPORTANT: This function assumes the input signal 'f' is already sampled at a uniform time step.
 %
 % Inputs:
-%   f - The signal (e.g., flow waveform) as a row or column vector.
-%   t - The corresponding time vector.
+%   f - The uniformly sampled signal (e.g., flow waveform) as a row or column vector.
+%   t - The corresponding time vector, assumed to be uniform.
 %
 % Outputs:
 %   Fn      - The raw FFT output.
@@ -12,29 +13,20 @@ function [Fn,Fn2,fshift]= CalcFourierModes(f,t)
 %   fshift  - The shifted frequency vector.
 
     a=size(t);
-    N_orig=a(1);
-    if N_orig==1
+    N=a(1);
+    if N==1
         t = t'; % Transpose if it's a row vector
         f = f';
-        N_orig = size(t,1);
+        N = size(t,1);
         disp('Input vectors were transposed to be column vectors.')
     end
 
-    % --- Resampling to a uniform time grid for FFT ---
-    % The FFT algorithm assumes uniformly sampled data. If the input time vector t
-    % is non-uniform, we must first resample the signal f onto a uniform grid.
-    
-    T = t(end) - t(1); % Total duration of the signal
-    N = N_orig; % Use the same number of points for the uniform grid
-    fs = (N-1)/T; % Correct sampling frequency for the uniform grid
-    t_uniform = linspace(t(1), t(end), N)'; % Create the uniform time vector
-    
-    % Interpolate the signal onto the uniform time grid
-    f_uniform = interp1(t, f, t_uniform, 'linear');
-
     % --- FFT Calculation ---
-    % Now, perform the FFT on the uniformly sampled data.
-    Fn=fft(f_uniform)/N;
+    % The FFT is performed directly on the input data, assuming it's uniformly sampled.
+    T = t(end) - t(1);
+    fs = N/T; % Corrected based on working version from user
+    
+    Fn=fft(f)/N;
     Fn2 = fftshift(Fn);
     
     % Create the frequency vector

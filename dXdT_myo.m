@@ -41,7 +41,7 @@ gamma = 0.75;
 % Parameters from m-vector
 cf1 = m(2); % epi/endo compliance scaling
 rf1 = m(3); % epi/endo resistance scaling
-R0m = m(4)*44;
+R0m = m(4)*44*2; % 
 R01 = m(5)*1.2*R0m;
 R02 = 0.5*R0m;
 C1 = m(6)*0.013/9;

@@ -18,7 +18,7 @@ end
 %% 3. Generate Systematic Sensitivity Plots
 % This section runs the systematic plotting analysis, which creates plots
 % for all combinations of filtering by one parameter and coloring by another.
-fprintf('Running systematic plotting analysis...\n');
+fprintf('Running SVD_plots analysis...\n');
 
 % --- Configuration ---
 connect_lines = true; % Set to true to plot with connecting lines
@@ -175,8 +175,9 @@ for f_idx = 1:length(filters)
     % --- Create Filter-Specific Directory ---
     filter_dir_name = sprintf('filter_%d', f_idx);
     filter_dir_path = fullfile(output_base_directory, filter_dir_name);
-    if ~exist(filter_dir_path, 'dir')
-        mkdir(filter_dir_path);
+    [status, msg, msgID] = mkdir(filter_dir_path);
+    if status == 0
+        error(msgID, msg);
     end
     
     % --- Write Filter to Text File ---
@@ -250,8 +251,9 @@ for p_idx = 1:length(param_names)
     
     % Create subdirectory for the parameter
     param_dir = fullfile(output_violin_directory, param_name);
-    if ~exist(param_dir, 'dir')
-        mkdir(param_dir);
+    [status, msg, msgID] = mkdir(param_dir);
+    if status == 0
+        error(msgID, msg);
     end
     
     % Use all simulation data for the plots
@@ -282,6 +284,8 @@ for p_idx = 1:length(param_names)
         xlabel(['Multiplier for ' param_name]);
         ylabel('SVD Feature Value');
         
+        fprintf('Saving to directory: %s\n', param_dir);
+        fprintf('Full path: %s\n', fullfile(param_dir, ['SVD' num2str(svd_idx) '_violin.png']));
         saveas(hFig, fullfile(param_dir, ['SVD' num2str(svd_idx) '_violin.png']));
         close(hFig);
     end
